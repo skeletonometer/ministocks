@@ -72,19 +72,19 @@ public class PortfolioStockRepository {
         PortfolioStockRepository.mDirtyPortfolioStockMap = mDirtyPortfolioStockMap;
     }
 
-    public void updateStocksQuotes() {
+    public void updateStocksQuotes(Context con) {
         if (this.stocksQuotes.isEmpty())
-            this.stocksQuotes = getStocksQuotes();
+            this.stocksQuotes = getStocksQuotes(con);
     }
 
-    private HashMap<String, StockQuote> getStocksQuotes() {
+    private HashMap<String, StockQuote> getStocksQuotes(Context con) {
         StockQuoteRepository stockQuoteRepository = new StockQuoteRepository(
                 this.mAppStorage, new StorageCache(this.mAppStorage), this.widgetRepository);
 
         Set<String> symbolSet = portfolioStocksInfo.keySet();
 
         return stockQuoteRepository
-                .getQuotes(Arrays.asList(symbolSet.toArray(new String[0])), false);
+                .getQuotes(Arrays.asList(symbolSet.toArray(new String[0])), false, con);
     }
 
     private HashMap<String, PortfolioStock> getPortfolioStocksInfo(Set<String> symbols) {

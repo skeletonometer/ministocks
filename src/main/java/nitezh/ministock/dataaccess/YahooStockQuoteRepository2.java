@@ -24,6 +24,9 @@
 
 package nitezh.ministock.dataaccess;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,6 +35,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
+import nitezh.ministock.R;
 import nitezh.ministock.domain.StockQuote;
 import nitezh.ministock.utils.Cache;
 import nitezh.ministock.utils.UrlDataTools;
@@ -39,7 +43,8 @@ import nitezh.ministock.utils.UrlDataTools;
 
 public class YahooStockQuoteRepository2 {
     //    private static final String BASE_URL = "https://api.iextrading.com/1.0/stock/market/batch";
-    private static final String BASE_URL = "https://query1.finance.yahoo.com/v6/finance/quote?fields=symbol,regularMarketPrice,regularMarketChange,regularMarketChangePercent,regularMarketVolume,shortName,longName";
+    private static final String BASE_URL = "https://api.twelvedata.com/quote";
+    //"https://query1.finance.yahoo.com/v6/finance/quote?fields=symbol,regularMarketPrice,regularMarketChange,regularMarketChangePercent,regularMarketVolume,shortName,longName";
     private final FxChangeRepository fxChangeRepository;
 
     public YahooStockQuoteRepository2(FxChangeRepository fxChangeRepository) {
@@ -56,10 +61,15 @@ public class YahooStockQuoteRepository2 {
                 sQuery.append(s);
             }
         }
-        return String.format("%s&symbols=%s", BASE_URL, sQuery);
+        //return String.format("%s&symbols=%s", BASE_URL, sQuery);
+        SharedPreferences preferences = cText.getSharedPreferences(cText.getString(R.string.prefs_name), 0);
+        return String.format("%s?symbol=%s&apikey=%s", BASE_URL, sQuery, preferences.getString("twelve_api_key", ""));
     }
 
-    public HashMap<String, StockQuote> getQuotes(Cache cache, List<String> symbols) {
+    Context cText;
+
+    public HashMap<String, StockQuote> getQuotes(Cache cache, List<String> symbols, Context con) {
+        cText = con;
         HashMap<String, StockQuote> quotes = new HashMap<>();
         HashMap<String, String> fxChanges = this.fxChangeRepository.getChanges(cache, symbols);
         JSONArray jsonArray;
@@ -84,22 +94,37 @@ public class YahooStockQuoteRepository2 {
     JSONArray retrieveQuotesAsJson(Cache cache, List<String> symbols) throws JSONException {
         String url = buildRequestUrl(symbols);
         String quotesString = UrlDataTools.getCachedUrlData(url, cache, 300);
-        JSONArray quotesJson = new JSONObject(quotesString).getJSONObject("quoteResponse").getJSONArray("result");
+        // JSONArray quotesJson = new JSONObject(quotesString).getJSONObject("quoteResponse").getJSONArray("result");
         JSONObject quoteJson;
-
         JSONArray quotes = new JSONArray();
-        for (int i = 0; i < quotesJson.length(); i++) {
-            quoteJson = quotesJson.getJSONObject(i);
-            JSONObject data = new JSONObject();
-            data.put("symbol", quoteJson.optString("symbol"));
-            data.put("price", quoteJson.optString("regularMarketPrice"));
-            data.put("change", quoteJson.optString("regularMarketChange"));
-            data.put("percent", quoteJson.optString("regularMarketChangePercent"));
-            data.put("exchange", quoteJson.optString("fullExchangeName"));
-            data.put("volume", quoteJson.optString("regularMarketVolume"));
-            data.put("name", quoteJson.optString("shortName"));
-            quotes.put(data);
+
+        for (String sym : symbols) {
+            quoteJson = new JSONObject(quotesString).getJSONObject(sym); //.optString("close")
+            if (quoteJson != null && !quoteJson.optString("status").equalsIgnoreCase("error")) {
+                JSONObject data = new JSONObject();
+                data.put("symbol", sym);
+                data.put("price", quoteJson.optString("close"));
+                data.put("change", quoteJson.optString("change"));
+                data.put("percent", quoteJson.optString("percent_change"));
+                data.put("exchange", quoteJson.optString("exchange"));
+                data.put("volume", quoteJson.optString("volume"));
+                data.put("name", quoteJson.optString("name"));
+                quotes.put(data);
+            }
         }
+
+//        for (int i = 0; i < quotesJson.length(); i++) {
+//            quoteJson = quotesJson.getJSONObject(i);
+//            JSONObject data = new JSONObject();
+//            data.put("symbol", quoteJson.optString("symbol"));
+//            data.put("price", quoteJson.optString("regularMarketPrice"));
+//            data.put("change", quoteJson.optString("regularMarketChange"));
+//            data.put("percent", quoteJson.optString("regularMarketChangePercent"));
+//            data.put("exchange", quoteJson.optString("fullExchangeName"));
+//            data.put("volume", quoteJson.optString("regularMarketVolume"));
+//            data.put("name", quoteJson.optString("shortName"));
+//            quotes.put(data);
+//        }
 
         return quotes;
     }

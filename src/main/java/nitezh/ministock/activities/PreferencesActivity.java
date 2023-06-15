@@ -628,6 +628,32 @@ public class PreferencesActivity extends PreferenceActivity implements OnSharedP
             showTimePickerDialog(preference, "23:59");
             return true;
         });
+
+        Preference twelve_api_key = findPreference("TwelveDataAPIKey");
+        twelve_api_key.setOnPreferenceClickListener(preference -> {
+            showAPIKeyEntry();
+            return true;
+        });
+    }
+
+    private void showAPIKeyEntry() {
+        String title = "BUILD " + VersionTools.BUILD;
+        String body = CHANGE_LOG;
+
+        DialogTools.InputAlertCallable callable = new DialogTools.InputAlertCallable() {
+            @Override
+            public Object call() {
+                //UserData.backupWidget(PreferencesActivity.this, mAppWidgetId, this.getInputValue());
+                SharedPreferences preferences = getAppPreferences();
+                Editor editor = preferences.edit();
+                editor.putString("twelve_api_key", this.getInputValue());
+                editor.apply();
+                return new Object();
+            }
+        };
+
+        DialogTools.inputWithCallback(this, "TwelveData API Key", "", "Save", "Cancel", "XYZ",
+                callable);
     }
 
     private void updateSummaries(SharedPreferences sharedPreferences, String key) {

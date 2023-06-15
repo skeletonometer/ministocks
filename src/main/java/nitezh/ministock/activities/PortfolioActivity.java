@@ -73,7 +73,7 @@ public class PortfolioActivity extends Activity {
 
         this.portfolioRepository = new PortfolioStockRepository(storage, widgetRepository);
 
-        this.portfolioRepository.updateStocksQuotes();
+        this.portfolioRepository.updateStocksQuotes(this);
 
         this.refreshView();
     }

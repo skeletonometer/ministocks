@@ -226,7 +226,7 @@ public class WidgetProviderBase extends AppWidgetProvider {
             Storage storage = PreferenceStorage.getInstance(this.context);
             StockQuoteRepository quoteRepository = new StockQuoteRepository(PreferenceStorage.getInstance(this.context), new StorageCache(storage), widgetRepository);
 
-            this.quotes = quoteRepository.getQuotes(widgetRepository.getWidget(this.appWidgetId).getSymbols(), updateType == UpdateType.VIEW_UPDATE);
+            this.quotes = quoteRepository.getQuotes(widgetRepository.getWidget(this.appWidgetId).getSymbols(), updateType == UpdateType.VIEW_UPDATE, context);
             this.timeStamp = quoteRepository.getTimeStamp();
 
             return null;

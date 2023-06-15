@@ -31,6 +31,16 @@
         android:key="widget_settings"
         android:title="Widget settings">
         <PreferenceScreen
+            android:key="api_setup"
+            android:summary="TwelveData API Key"
+            android:title="TwelveData API Key">
+            <Preference
+                android:defaultValue="XYZ"
+                android:key="TwelveDataAPIKey"
+                android:summary="Set API Key"
+                android:title="Twelve Data API Key" />
+        </PreferenceScreen>
+        <PreferenceScreen
             android:key="stock_setup"
             android:summary="Setup the stocks for this widget"
             android:title="Stocks setup">
