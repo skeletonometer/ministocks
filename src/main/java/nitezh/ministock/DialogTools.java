@@ -151,10 +151,8 @@ public class DialogTools {
             alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, negativeButtonText, (dialog, which) -> {
             });
         }
-        alertDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-            }
+        alertDialog.setOnDismissListener(dialog -> {
+            
         });
         alertDialog.show();
     }

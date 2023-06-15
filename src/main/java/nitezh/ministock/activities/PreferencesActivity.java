@@ -652,7 +652,9 @@ public class PreferencesActivity extends PreferenceActivity implements OnSharedP
             }
         };
 
-        DialogTools.inputWithCallback(this, "TwelveData API Key", "", "Save", "Cancel", "XYZ",
+        SharedPreferences preferences = getAppPreferences();
+
+        DialogTools.inputWithCallback(this, "TwelveData API Key", "", "Save", "Cancel", preferences.getString("twelve_api_key", ""),
                 callable);
     }
 
