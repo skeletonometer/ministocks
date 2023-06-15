@@ -72,7 +72,7 @@ public class PreferencesActivity extends PreferenceActivity implements OnSharedP
 //            + "New features:<br/><br/>"
 //            + "• Support widget resizing<br/>"
 //            + "• Use updated theme<br/><br/>"
-            + "Bug fixes:<br/><br/>" + "• Enable automatic updates on Android 8+";
+            + "Bug fixes:<br/><br/>" + "• Integration with TwelveData API (set your API key in options).";
 
     // Fields for time pickers
     private TimePickerDialog.OnTimeSetListener mTimeSetListener;
