@@ -3,9 +3,10 @@ Ministocks [![Build Status](https://img.shields.io/travis/niteshpatel/ministocks
 
 Minimum version for new features is Android 4.1.x (minSdkVersion=16) 
 
+API Swap
+--------
+Note, the API used has been swapped from Yahoo to TwelveData (https://twelvedata.com/pricing) which has a free tier, but you need to enter in your own API key in the settings.
+
 Download
 --------
-<a href="https://f-droid.org/packages/nitezh.ministock" target="_blank">
-<img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" height="50"/></a>
-<a href="https://play.google.com/store/apps/details?id=nitezh.ministock" target="_blank">
-<img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" alt="Get it on Google Play" height="50"/></a>
+Not available on google play for this forked version, see the releases section for a manual download if you would like to install it off-market.
