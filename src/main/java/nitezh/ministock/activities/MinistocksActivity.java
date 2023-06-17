@@ -28,6 +28,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
 import android.widget.TextView;
 
 import nitezh.ministock.R;
@@ -39,8 +40,9 @@ public class MinistocksActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ministocks);
-        Spanned html = Html.fromHtml("Note: This is a widget only app.<br /><br />" + "<b>Getting started</b><br /><br />" + "First long-press an empty space on your Home screen to bring up the <i>Add to Home screen</i> menu.<br /><br />" + "Then select the Widgets option and finally, select the <i>MinistocksActivity</i> item from the list of widgets.<br /><br />" + "Multiple widgets can be added, as each widget stores its own data.<br /><br />" + "<b>Press Home or Back to close.</b><br />");
+        Spanned html = Html.fromHtml("<b><div style=\"font-size: 20px\">IMPORTANT</div> THIS VERSION OF THE APP REQUIRES A TWELVEDATA API KEY (see: <a href=\"https://twelvedata.com/pricing\">https://twelvedata.com/pricing</a> look for the Basic plan) WHICH YOU NEED TO COPY INTO THE WIDGET SETTINGS.</b><br/><br/> Note: This is a widget only app.<br /><br />" + "<b>Getting started</b><br /><br />" + "First long-press an empty space on your Home screen to bring up the <i>Add to Home screen</i> menu.<br /><br />" + "Then select the Widgets option and finally, select the <i>MinistocksActivity</i> item from the list of widgets.<br /><br />" + "Multiple widgets can be added, as each widget stores its own data.<br /><br />" + "<b>Press Home or Back to close.</b><br />");
         TextView text = findViewById(R.id.ministocks_text);
+        text.setMovementMethod(LinkMovementMethod.getInstance());
         text.setText(html);
     }
 
